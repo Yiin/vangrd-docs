@@ -1,4 +1,4 @@
-# Vangrd: a Travian automation assistant
+# Vangrd: (literally) Best Travian Bot
 
 [Vangrd](https://vangrd.bot) is a Travian bot that plays your account the way you set it up. It builds villages, starts farm lists, trains troops, runs NPC trades, and warns you about incoming attacks, all on a weekly schedule that looks like a person playing rather than a script.
 
