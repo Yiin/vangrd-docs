@@ -1,0 +1,758 @@
+# Vangrd changelog
+
+All updates to [Vangrd](https://vangrd.bot), newest first. This is the same changelog you see inside the app.
+
+## 2026-07-03
+
+### Fewer Interrupted Actions
+
+Fixed several timing issues where the agent could close its browser while still reading reports or starting farm lists, especially around scheduled sleep and automatic restarts. Actions now finish or resume cleanly instead of erroring.
+
+### Build Queue Improvements
+
+When the build queue is full, the agent now waits for the next free slot instead of retrying every couple of minutes. It also recovers when the marketplace opens on the send-resources tab, and a missing rally point or marketplace is queued for construction automatically instead of causing errors.
+
+### Training Skips Unresearched Units
+
+If your training priorities include a unit that isn't researched in a village, the agent now skips it with a clear message instead of failing and holding up the rest of the training list.
+
+### Capital Detection Fixed
+
+The agent now correctly detects which of your villages is the capital, so features that depend on knowing your capital work as intended.
+
+## 2026-07-01
+
+### Accurate Connection Status
+
+The agent's connection status no longer shows an outdated failure after the connection has recovered.
+
+## 2026-06-20
+
+### Auto-Use Artworks
+
+New Hero setting that automatically uses Artworks every 6 hours to add culture points toward your next village. You can set a minimum culture-point threshold so an Artwork is never spent for a tiny gain. Off by default.
+
+## 2026-06-17
+
+### Smarter Village Settling
+
+Settling new villages is more reliable. The agent now keeps an up-to-date read on your culture points and estimates them between checks, so it stops waiting on stale data and sends settlers to found your next village as soon as a settlement slot opens up.
+
+## 2026-06-03
+
+### Accurate Troop Speeds
+
+Corrected the movement speeds for Egyptian, Hun, and Spartan troops, so travel times and raid timing are now spot-on for those tribes. Several units, including scouts, were off before.
+
+## 2026-05-25
+
+### Auto-Refill Villages
+
+Each village can now set minimum and maximum levels for its resources. When a resource drops below the minimum, the agent ships in from another village to top it back up toward the maximum. This works alongside supply routes - routes push surplus out of a village, while fill levels pull resources in to keep it stocked.
+
+## 2026-05-16
+
+### Schedules That Actually Stop
+
+Editing your agent's schedule now takes effect right away. Clearing slots while a job is running lets the current task finish, then the agent stops cleanly instead of carrying on past its hours. Emptying every slot also blocks the agent immediately - it no longer falls back to running 24/7.
+
+## 2026-05-15
+
+### Smarter Build Queue Tracking
+
+The agent now correctly recognises buildings queued in the master builder slot, so it no longer keeps retrying upgrades that are already lined up. This fixes a case where chained upgrades on the same building would cause the agent to fail and drop plan entries.
+
+## 2026-05-10
+
+### Clearer Schedules Page
+
+The Schedules page now frames each agent as a real person (using their proxy country), shows a combined coverage strip across all agents, and surfaces tips when a schedule looks unrealistic - like long blocks without a break or two agents overlapping. Picking the right hours is a lot easier now.
+
+## 2026-05-09
+
+### See Where Your Gold Goes
+
+The Gold page now keeps a running ledger of every gold the agent spends - finish-now upgrades, NPC trades, gold-to-silver conversions, and hero smelting. Pick a window (24h, 7 days, 30 days, or all-time), filter by source or village, and see at a glance which feature is eating your gold.
+
+### Finish Now Reads the Whole Queue
+
+The "Complete immediately time" threshold used to compare against just the next slot to free, so a queue full of long builds wouldn't gold-finish if the first one happened to be close to done. It now compares against when the last item in the queue finishes, which is what "how long will I be waiting on this queue" actually means - so once your full queue stretches past the threshold, the agent spends gold to free a slot, regardless of which item is closest to completion.
+
+## 2026-05-06
+
+### Every Trade Route at a Glance
+
+The Marketplace page now shows every shipment across your villages in one place. A live timeline lists what's arriving and when, a per-village board flags villages running negative crop and how much help is on the way, and a route map points out gaps - like a starving village with no incoming crop route configured.
+
+### One Stuck Village No Longer Blocks the Others
+
+If one village was waiting a long time for resources to upgrade something expensive, building in your other villages could quietly stall too. Now each village is checked on its own, so the others keep building even while one sits parked.
+
+## 2026-05-05
+
+### See What the Agent Will Build Next
+
+Each village's build queue now shows a status line explaining the agent's next move and what it's waiting on - "Agent will queue Cropland (9) once 8800 wood is available", "Queue full - agent will queue Smithy (16) after current build finishes in ~12m", or simply "Plan complete". It updates live as your queue advances, resources arrive, or another village picks up its turn.
+
+### Troop Training Stops Stalling on Full Warehouses
+
+Training queues are now judged one building at a time, so a long Barracks queue no longer blocks the Stable, Workshop, or Great Barracks from training when their own queues are short. There is also a new urgency option, "When below target queue, or warehouse is filling up", that tops priorities up to their max queue once your warehouse passes a threshold (default 90%), so spare resources get burned into troops instead of overflowing.
+
+## 2026-05-01
+
+### Smarter NPC Trades for Settlers
+
+While waiting on resources for a new settler, Vangrd no longer burns NPC trades it can't actually use. It now skips the exchange when your warehouses are barely full or when your total resources still fall short of one settler's cost, so your daily NPC budget goes toward trades that actually move you forward.
+
+## 2026-04-30
+
+### Attack Planner Time Zone Fix
+
+The Server/Local clock toggle now properly drives the attack planner: switching modes reinterprets both the displayed times and the time you type into the send/land picker in the chosen zone, so 14:00 in server mode means 14:00 on the game server. The picker itself was also upgraded to a calendar-and-segments control with arrow-key adjustments, instead of the browser's native datetime input.
+
+## 2026-04-29
+
+### More Accurate Agent Health
+
+The Agent Health bar was showing perfectly fine agents as mostly unstable because the test it ran kept failing on its own. It now uses a more reliable check, so the bar actually shows whether your agent is working.
+
+### Reign of Fire Multi-Tribe Support
+
+On Reign of Fire servers each village can be a different tribe, and Vangrd now respects that everywhere. Oasis clearing, farm list optimization and tuning, scout probes, raid lists and the new-list dialog all show troops for the village actually doing the work, not the account's first tribe. The account-wide oasis clearing picker shows troops from every tribe on your account so you can configure mixed setups in one place.
+
+### Attack Planner Polish
+
+The attack planner now labels what fires - your queued waves plus the troops in the form, capped at 8 waves total (the rally point limit). The table has a new **Sends** column next to **Lands** so you can see when each attack actually leaves, and timestamps stay readable on narrow screens. An attack that fires more than 5 seconds late is now flagged as failed with the drift shown, and the schedule timezone picker covers more regions, including São Paulo and several Europe/Asia/Australia entries.
+
+## 2026-04-26
+
+### Automated Account Creation
+
+Vangrd can now create a brand-new Travian account for you from scratch. When adding an agent, you can bring your own account, register with your email, or let Vangrd order a fresh inbox - it picks a regional email provider, handles verification, and then sends and accepts the dual invite on your access automatically. Captchas during registration are solved reliably, and each new account gets its own randomised browser profile so it looks distinct.
+
+### Farm List Auto-Cleanup
+
+Targets that Travian auto-deactivates on your farm lists (deletes, bans, prolonged inactivity) are now cleaned up automatically on the next raid pass. Natar takeovers are reactivated so they stay in rotation, and the rest are removed - so your raid lists stop dragging dead slots and stay focused on real targets without you having to prune them by hand.
+
+### Quality of Life Polish
+
+A round of small fixes: oasis scans show live progress and use a more reliable map view, behavior preset tooltips spell out the values they apply, tribe pickers only offer tribes playable on the current gameworld, and tracked players auto-pause when their profile is deleted. Background work like oasis scans and manual lookups now finishes properly instead of getting cut short, and one broken farm list no longer takes down the rest of the batch.
+
+## 2026-04-24
+
+### Per-List Auto-Optimize and Auto-Tune
+
+**Auto-optimize** is now a per-list setting layered on top of the account-wide default, and a new **Auto-tune** option periodically rebalances troops on each slot using raid history. Each list can be set to **Default / On / Off**, so curated raids, scouting lists, and hand-tuned anvils stay safe from automatic changes. The Farm Optimizer dialog is reorganised into two sections - one for what runs automatically, one for applying changes by hand.
+
+### Hero Auto-Smelt
+
+Vangrd can now keep your Hero's crafting slots busy on its own. Open the Hero page, flip on **Auto-Smelt**, pick the highest rarity worth melting down, and choose how to finish each smelt: grab half the materials the moment it starts, wait out the full duration for free, or spend 2 gold per slot to cut the remaining wait in half. Vangrd then fills both slots with eligible items, takes completed Materials the instant they're ready, and stops on its own when the inventory has nothing left to smelt.
+
+## 2026-04-23
+
+### Per-List Farm Schedules
+
+Every farm list now has its own schedule, so you can run most lists on one cadence and a few on a different one. Lists from the same village's rally point are still batched into a single **Start All** click whenever they're due close together. The UI now groups lists by village with a summary line and a one-click button to apply a schedule to every list in that village. Existing setups carry over automatically.
+
+### Reliability & Stability
+
+A pass on the parts of Vangrd that handle batched farm-list raids, build plans, scheduled attacks, and broken proxies. Farm-list batches no longer get stuck on lane handoffs, and stuck lists back off properly instead of hammering every few minutes. Build plan entries that keep failing are dropped after three strikes instead of blocking the queue forever. Scheduled attacks survive ownership handovers, and invalid proxy configurations surface clearly in the UI instead of silently retrying.
+
+## 2026-04-22
+
+### Plan Villages Before They Exist
+
+You can now configure a village before you've even founded it. Use **Add upcoming village** in the village sidebar to name it, pick a tribe and field layout, and optionally pin coordinates - the entry appears alongside your real villages with its own styling and full Development, Automation, and Settings tabs, so you can lay down a build plan and automation toggles ahead of time. When a new village turns up in the next scan and matches (coord-pinned entries win; otherwise the oldest matching tribe), Vangrd silently adopts your upcoming entry, applies the settings you prepared, and renames the new village to the planned name automatically.
+
+## 2026-04-21
+
+### Hero Auction Bidding
+
+Vangrd can now bid on hero auctions for you. Open the new **Auctions** page and build a list of items you want with a max silver price for each. Vangrd snipes matching lots in the final minutes to avoid bidding wars, can top up silver from gold when a bid is about to land, and can be limited to auctions where the leading bidder is in a specific alliance.
+
+### Academy Research Automation
+
+Vangrd now automates troop research in the Academy. Pick the troops you want unlocked and the order to research them in from the new **Academy research** section in village settings - Vangrd scans the Academy page, tracks what's already researched, and starts the next research as soon as resources and prerequisites line up. Two new account-level ad bonuses are also available: **Research faster** speeds up Academy research by 25%, and **Smithy upgrades faster** does the same for Smithy upgrades, matching the existing building-speedup toggle.
+
+## 2026-04-20
+
+### Split Supply by Resource
+
+The supply settings now let you send **different resources to different villages**. Add one route for wood, clay, and iron to your hammer village, another that sends only crop to your capital, and leave anything you'd rather keep at home unchecked. Up to four routes per village; resources not claimed by any route stay put. Your existing single-target setup is migrated into one route automatically, so nothing changes unless you want it to.
+
+## 2026-04-19
+
+### Auto-Spend Hero Attribute Points
+
+When your hero levels up, Vangrd can now automatically pour the fresh attribute points into the stat you care about most - **Fighting strength**, **Off bonus**, **Def bonus**, or **Resources**. Pick a focus from the new **Attributes** section on the Hero page, and next time the level-up badge lights up the points are distributed for you.
+
+### Smarter Hero Production Focus
+
+Auto hero production now picks its resource focus by solving for the fastest schedule to unblock the next building, instead of always picking a single resource or **+all**. When a build needs two resources (say 400 wood and 400 clay), the hero alternates between them rather than wasting time on **+all** - noticeably faster on multi-resource deficits. The scheduler also accounts for production increases as buildings complete, and handles Roman parallel build lanes (resource fields + infrastructure) independently. Focus swaps are minimised when two options are nearly tied, so the hero doesn't thrash between resources.
+
+## 2026-04-17
+
+### Inbox Message Alerts
+
+Vangrd can now ping your Discord or Telegram whenever a new in-game message lands in your inbox. The alert includes the subject, sender, and a direct link to open the message. Toggle it on from the account settings under **Account Events**.
+
+### Smarter Build Plan Templates
+
+Applying a saved build plan template to a different village now adapts the plan to that village instead of copying slot numbers literally. Walls and tribe-specific administration buildings are translated to the target tribe's equivalent (a Gaul Palisade becomes a Teuton Earth Wall, and a Roman template's Residence becomes a Hun Command Center). Buildings without a cross-tribe counterpart, like **Brewery** on a non-Teuton village, are skipped with a clear reason. Extra warehouses, granaries, and crannies count against any copies you already have at the required level, so you don't end up queueing duplicates. When a slot is already occupied by a different building, the plan falls back to the nearest empty slot instead of overwriting. Items that depend on prerequisites still in the plan are reordered so they build in the right sequence. The apply dialog now lists every skipped item with its reason so you can see what changed.
+
+### Smarter Cross-Village Supply
+
+Build-plan resource shipments now **respect the Enable Supply toggle** on each village - if supply is unchecked, the bot will no longer pull resources from that village to cover other villages' build queues. Per-resource **Keep** thresholds (wood, clay, iron, crop) are also honored when picking a donor, so donor villages no longer get drained below their reserves. Finally, the bot now tracks resources already in transit and won't dispatch duplicate shipments for the same shortfall - ending the occasional burst of three back-to-back sends for a single build.
+
+## 2026-04-16
+
+### Per-Village Notifications
+
+You can now choose which notification types (incoming attacks, defense actions, full warehouses, crop depleted) to enable or disable for each village individually. Support villages you don't care about can be muted while keeping alerts active on your important ones.
+
+### Production Boost Timing Fix
+
+The +25% production bonus is now claimed reliably. Previously, the bot could miss the daily availability window and keep retrying at the wrong times. It now waits precisely until the server's daily reset when bonuses become claimable again.
+
+### Village Settings Reliability
+
+Village automation settings (NPC merchant, training, supply, building, and others) now stay reliably connected even during long sessions. Previously, changes made in the village automation panel could silently fail to save after the bot had been running for a while.
+
+### Per-Village Storage Cache Duration
+
+Storage cache duration is now a **per-village setting** instead of account-wide. Set shorter cache times on active villages (where trades and shipments arrive frequently) so the bot rechecks resources sooner, while keeping longer intervals on passive villages to save page visits.
+
+### Full Multi-Language Support
+
+Vangrd is now available in **8 languages**: English, Chinese, Czech, German, French, Italian, Lithuanian, Polish, Russian, Turkish, Hebrew and Arabic. Use the flag picker in the top bar to switch languages instantly. You can also [suggest translation improvements](/app/translations) directly from the app.
+
+## 2026-04-15
+
+### Building Construction Fixed
+
+Fixed several buildings being placed on the wrong construction tab (e.g. Trade Office, Marketplace, Brewery). This caused the bot to look for the building on the wrong tab and fail repeatedly. All building-to-tab mappings now match the actual game.
+
+### Attack Planner Hero Fix
+
+The "Include Hero" checkbox in the attack planner now resets correctly after adding a wave to a multi-wave plan. Previously it stayed checked, causing the hero to be included in subsequent waves unintentionally.
+
+### Training Urgency Setting
+
+New per-village **training urgency** setting lets you control when resource threshhold should be ignored.
+
+## 2026-04-14
+
+### Overlapping Agents
+
+Agents with overlapping schedules can now run concurrent sessions, immitating real players much better.
+
+### Incoming Attack Detection Fixed
+
+Fixed incoming attack scanning missing some attacks due to a navigation issue. All incoming attacks are now detected reliably (unless scheduler is sleeping of course)
+
+### Multi-Wave Oasis Clearing
+
+Oasis clearing now sends multiple waves when a single attack isn't enough to clear all animals when they are actively respawning.
+
+### Scout Mission Type in Attack Planner
+
+When scheduling attacks with scouts, you can now choose between scouting **resources & troops** or **defences & troops**. The selected mission type is sent with the attack automatically.
+
+### Attack Plan Delete and Abort Fixed
+
+Fixed a bug where deleting or aborting a scheduled attack plan did nothing - the confirmation dialog would close but the plan stayed. Plans can now be properly deleted and aborted from the attack planner.
+
+## 2026-04-13
+
+### Account Import Fixed
+
+Importing account data from older exports now works correctly. Previously, credentials and agent settings were silently lost during import - accounts would appear but couldn't log in. Imports from any previous version are now automatically converted to the current format, preserving all your credentials, agent configs, browser settings, and schedule grids.
+
+### Oasis Clearing Now Works on Fatal Reports
+
+Fixed a bug where oasis clearing attacks were never actually sent when triggered by fatal farm list reports. The clearing was logged as "queued" but silently dropped - so animals (elephants, etc.) would keep killing your troops with no counter-attack. Clearing attacks now fire immediately when a fatal oasis report is detected.
+
+## 2026-04-11
+
+### Catapult Target Selection
+
+You can now pre-pick catapult targets when scheduling attacks. Choose a specific building to destroy or leave it on Random. If your Rally Point is level 20 and you send 20+ catapults, a second target slot appears - just like in the game.
+
+### Agent Recognition Across Accounts
+
+Purchased agents are now correctly recognized when shared across multiple accounts. Previously an agent could show as "Manual" on a second account even though it was purchased - this is now fixed.
+
+### Multi-Wave Attacks Fixed
+
+Scheduled attacks with multiple waves now send all waves correctly. Previously only the first wave was sent - the remaining waves failed because the game rejected the follow-up requests. This is now fixed and waves are confirmed reliably.
+
+### Targeted Raids Troop Icons Fixed
+
+Troop icons in Targeted Raids now correctly show your tribe's troops instead of always displaying Roman units. The troop selector when adding entries also shows proper troop icons with count inputs for each unit type.
+
+### Faster Agent Handoff
+
+When one agent fails to connect, Vangrd now hands off to the next scheduled agent immediately instead of waiting up to 40 minutes for the retry timer to expire. Previously a stuck agent could block all others from taking over the session.
+
+### Attack Type Selector
+
+You can now choose between **Raid** and **Attack** when scheduling attacks. Previously all scheduled attacks were sent as normal attacks - now you can plan raids too.
+
+## 2026-04-10
+
+### Farm List Village Fix
+
+Fixed an issue where farm list raids could fail if the active village switched to one without a rally point. Vangrd now always verifies the rally point before sending raids, so you won't see "start all" timeouts on villages that can't raid.
+
+### Attack Target Verification
+
+Scheduled attacks now verify the target player on the confirmation page before sending. If a village changed owners between planning and execution, the attack is aborted instead of hitting the wrong player.
+
+## 2026-04-09
+
+### More Reliable Player Tracking
+
+Player profile scans now wait for the profile to fully load before reading data. Previously, scans could fail with "player may be deleted" if the page hadn't finished rendering yet - this is now fixed.
+
+### Register Lobby Accounts for Agents
+
+You can now **register a new Travian lobby account** for each agent directly from the Agents page. Travian rules require every dual to log in with their own lobby account, so we recommend creating a dedicated account for each agent. The registration wizard handles the entire process using the agent's own browser - just enter the email, paste the activation code, and the rest is automated.
+
+## 2026-04-08
+
+### Realistic Agent Schedules
+
+Agent schedules now support **behavioral jitter** so transitions don't happen at exact clock boundaries. Choose a behavior preset - Casual, Dedicated, or ADHD - to add natural variation to login/logout times, including early arrivals, overstay, and occasional skipped sessions. Fine-tune jitter, skip chance, and overlap per agent. Makes multi-agent play patterns look much more human.
+
+### Fewer False Crop Alerts
+
+Fixed an issue where crop depletion notifications could fire incorrectly when scanning the capacity page. Alerts now only trigger on genuinely low crop levels.
+
+### Auto-Distribute Troops
+
+Targeted Raids now has an **auto-distribute** mode that automatically splits your available troops across all active raid targets in the list. Set it once and the bot balances troop assignments for you.
+
+### Map Search by Player & Alliance
+
+The nearby villages tool now supports three search modes - **coordinates**, **player name**, and **alliance name**. Type a player or alliance name to search, then view all their villages with tribe and population filters. Makes it easy to scout neighbors or find alliance members on the map.
+
+### Notification Preferences
+
+You can now choose exactly which notifications to receive - **incoming attacks**, **defense actions**, **full warehouses**, and **crop depletion**. Full warehouse and crop alerts trigger on fresh storage scans so you always get accurate data. Configure your preferences in Account Settings under Notifications.
+
+### Targeted Raids
+
+New **Targeted Raids** tab in Farms lets you set up recurring attacks on specific oases or villages. Create raid lists per village, configure troop counts and intervals with jitter, and the bot sends attacks automatically on schedule. Oasis targets can auto-calculate the right troops based on animal counts, while village targets use fixed troop amounts. Import targets from your existing farm lists or the oasis scanner, and export them back.
+
+### Smarter Oasis Clearing
+
+Oasis clearing got a major overhaul. Clearing strategy settings now cascade from **account to village to list to entry** - set defaults once, override where needed. When farm list raids take casualties on an oasis, clearing attacks are dispatched immediately without disabling the farm list entry. You can toggle auto-clear per farm list.
+
+## 2026-04-07
+
+### Training: NPC Fix & Explainer
+
+Fixed NPC training burning gold on tiny or skipped batches - NPC priorities now train the **maximum affordable amount** each time instead of stage-based batching. NPC exchanges during training now also respect the **max uses per hour** rate limit. Also added a "How does this work?" link in the training settings that explains the full training logic.
+
+### Telegram Notifications
+
+You can now receive attack notifications on **Telegram** in addition to Discord. Create a bot via {'@BotFather'}, paste the token in Settings > Notifications, and link it with one click - Vangrd detects your chat automatically. Includes a test message button to verify the connection.
+
+### Smarter Troop Training
+
+Troop training now respects your **max queue time** setting instead of always queuing as many troops as you can afford. It also trains in measured batches - targeting two stages ahead of your current queue rather than dumping everything at once. For example, with a 20-minute minimum queue and 34 minutes remaining, it'll train enough to reach about 60 minutes instead of maxing out the queue.
+
+## 2026-04-06
+
+### Build Plan Fixes
+
+Fixed two issues with automatic building. Build plans using the **Res** or **Crop** filter could get stuck after all matching fields reached the target level - the plan wouldn't advance to the next item. Also fixed new buildings (like Barracks or Academy on empty slots) being skipped entirely - the planner now correctly starts construction instead of jumping ahead to existing buildings.
+
+### Server Time Display
+
+The dashboard now shows the game server's current time in the top bar. Click it to toggle between **server time** and **local time** - your choice applies to all timestamps across the dashboard, so you always know when events happen in the game's timezone.
+
+### More Accurate Travel Times
+
+Travel time calculations now use the correct Travian Legends formula, which doubles the Tournament Square bonus. Previously, attacks planned with "Lands at" could arrive minutes early on longer distances. You can also set the game version manually in account settings.
+
+### Attack Plans Stay on Schedule
+
+Scheduled attacks no longer fail when the browser happens to be closed between jobs. Vangrd now proactively opens a browser session when an attack is approaching, so the attack is sent on time even if the account was idle.
+
+### Attack Plans Ignore Sleep Mode
+
+Scheduled attack plans now execute on time even when the account is in a sleep cycle or outside its schedule window. Previously, sleeping could cause attacks to be missed.
+
+### Resource Field Filter
+
+When bulk-upgrading resource fields, you can now choose **All**, **Resources** (wood, clay, iron only), or **Crop** - so you can level up non-crop fields without touching croplands, or vice versa. The filter also appears on build plan items.
+
+## 2026-04-05
+
+### Training Queue Improvements
+
+Added a **max queue** limit per training priority - when a queue already exceeds the set duration, training is skipped so resources aren't locked up in one building forever. Training queue times are also tracked more accurately.
+
+### Referral Program
+
+Invite a friend and you both get a **free month of an agent** after their first purchase. Find your personal referral link on the Profile page. Credits can be redeemed anytime when buying a new agent.
+
+## 2026-04-03
+
+### Smarter Probe Raids
+
+Probe raids now detect when a target village no longer exists and automatically remove it from the queue, instead of retrying forever.
+
+### Browser Stability Fix
+
+Fixed an issue where the browser could be closed while a job was still running, causing tasks to fail mid-execution. This was most noticeable on accounts where jobs take longer to complete - the browser would shut down unexpectedly and trigger a restart cycle.
+
+## 2026-04-02
+
+### Reliable Farm List Sending
+
+Fixed an issue where "Start All" could send only some of your farm lists - Vangrd now waits for every list to finish sending before moving on. Individual farm list sends also use more reliable confirmation.
+
+## 2026-04-01
+
+### Major Performance Boost
+
+Overhauled how Vangrd handles page loading and asset caching - operations that previously took 40-120 seconds (village switching, opening buildings, starting farm lists) now complete in 1-8 seconds. Accounts with many villages will see the biggest improvement. Farm list "Start All" also works reliably now on accounts where it previously failed due to the page being too large.
+
+## 2026-03-31
+
+### Stability Fixes
+
+Fixed an issue where browser sessions could get stuck in a restart loop, and another where probing would retry forever when no troops were available.
+
+## 2026-03-30
+
+### Probe List Selection Fix
+
+Fixed a bug where selecting targets in the probe list had no effect - checkboxes appeared checked but the action bar always showed "0 selected", making it impossible to probe or add targets to a farm list. Also added a working **select all** checkbox in the table header.
+
+### Major Stability Improvements
+
+Vangrd now runs significantly smoother under sustained load - fixed a memory issue that could cause the bot to slow down or freeze after running for extended periods. Also fixed a critical bug where a login failure on one account would stop **all** accounts instead of just the affected one. Browser sessions now automatically restart when they become unresponsive.
+
+## 2026-03-28
+
+### Farm List Reliability
+
+Farm list pages are now reloaded before each Start All click to work around a Travian bug that causes the browser to slow down when the farm list page stays open for a while.
+
+## 2026-03-24
+
+### Improved Detection Prevention
+
+Enhanced browser fingerprint protection with additional hardening across game pages, making Vangrd even harder to distinguish from a regular browser.
+
+### Farm List Target Deactivation Fix
+
+Fixed a bug where fatal and casualty reports were not triggering automatic target deactivation or oasis clearing. The game changed how village links work in reports, and Vangrd was unable to read the target coordinates - so dangerous targets stayed active instead of being disabled.
+
+## 2026-03-23
+
+### Session Recovery Fix
+
+Fixed an issue where Vangrd could get stuck after a game server outage, requiring a manual restart to resume. Sessions now recover automatically with shorter retry intervals once the server comes back online. Manually stopping and restarting a session also properly resets the retry state.
+
+### Farm List Start Reliability
+
+Fixed an issue where "Start All" for farm lists could report failure even though raids were sent successfully - sometimes sending them multiple times. Vangrd now validates the server response directly instead of relying on a brief UI state change.
+
+## 2026-03-22
+
+### Village Defaults Now Work Everywhere
+
+Account-wide village defaults (troop training, NPC, supply, etc.) are now correctly picked up when deciding which automations to run. Previously, features enabled only through defaults - without a per-village override - were silently ignored.
+
+## 2026-03-20
+
+### Faster Build Queue Filling
+
+When you have **Plus** active (or Roman dual queues), Vangrd now fills all available build queue slots in a single pass instead of waiting for a separate cycle per slot. This cuts queue-filling time roughly in half for Plus accounts.
+
+## 2026-03-19
+
+### Clearer Farm List Setup
+
+The Farm Lists tab now explains how **Start All** works, what disabling a list does (troops stay home - useful before attacks or defenses), and when you'd want individual schedules instead. Disabled lists are also now properly skipped by Start All.
+
+## 2026-03-18
+
+### Farm List Activity Visible
+
+Farm list runs now appear in the **Activity** view. Previously they were missing due to a tracking issue - you can now see every raid with its timing and status.
+
+### Training Helmet Auto-Restore
+
+When using the training helmet auto-equip feature, your original helmet is now **restored automatically** after all troop training is finished. Previously the training helmet would stay equipped - now it swaps back to whatever you had on before.
+
+## 2026-03-17
+
+### Job Scheduling Stability
+
+Fixed an issue where multiple jobs could run at the same time on the same browser tab, causing navigation errors, timeouts, and "browser unresponsive" failures. Jobs now properly wait their turn - only one runs per tab at a time.
+
+## 2026-03-16
+
+### Farm Lists Run On Time
+
+Farm list raids are no longer delayed by long-running building upgrades or other jobs. Farm lists now **preempt** other work - when it's time to send raids, everything else pauses until the farm lists are dispatched, then resumes automatically.
+
+### Travel & Army Calculators
+
+Two new tools in the **Tools** tab. The **Travel Calculator** computes distance and travel time between villages (accounting for Tournament Square and artefacts) and has a **Counter Attack** mode for timing interceptions. The **Army Calculator** shows your army's real power with smithy upgrades and tells you whether upgrading or training more troops is the better investment. Both auto-fill from your villages.
+
+## 2026-03-15
+
+### Faster Activity Logs
+
+Activity log queries are now **instant** instead of taking 20+ seconds on large accounts. The logs have been moved to an indexed database, so filtering, searching, and scrolling through activity is dramatically faster.
+
+## 2026-03-14
+
+### Unified Access Profiles
+
+All accounts - including the primary - now use the same profile format with identical browser settings, agent configuration, and **managed user-agent picker**. No more raw user-agent field that could lead to bans. Scheduling and session management are also simplified under the hood.
+
+## 2026-03-13
+
+### Storage Cache Minimum
+
+Storage cache duration now enforces a **5-minute minimum** to prevent excessive page refreshes. If your setting was below this, you'll see a warning in account settings.
+
+### Building Upgrade Reliability
+
+Fixed an issue where upgrading multi-tab buildings like the **Rally Point** or **Marketplace** could fail if the page landed on the wrong tab. Vangrd now automatically switches to the correct tab before attempting the upgrade.
+
+### More Consistent Farm List Timing
+
+Farm list intervals are now measured **start-to-start** instead of end-to-start. If your farm run takes 2 minutes and the interval is 10 minutes, the next run starts 10 minutes after the previous one began - not 12 minutes later.
+
+## 2026-03-12
+
+### Find & Probe Improvements
+
+You can now **add villages directly to a farm list** from search results without probing first. The radius filter also supports a **min–max range** (e.g. 30–100) so you can search a ring around your village instead of the full circle.
+
+### Smarter Build Plan Warnings
+
+Build plan no longer warns about missing prerequisite buildings (like Academy) when upgrading buildings that are already constructed. Prerequisite checks now only apply to **new** constructions, so demolished research buildings won't trigger false warnings.
+
+## 2026-03-11
+
+### Stopped Accounts No Longer Show "Sleeping"
+
+When you manually stop an account, the dashboard now correctly shows **Stopped** instead of displaying a stale "Sleeping" phase with an expired timer.
+
+### Faster Page Navigation
+
+Navigating between pages (e.g. training summary, troop overview, warehouse) is now significantly faster. Previously each intermediate tab click waited up to 15 seconds for background processing - now only the final destination page triggers that wait.
+
+### Defense Scans for Multiple Villages
+
+Fixed a bug where only one village would get scanned for incoming attacks even when multiple villages were under attack at the same time. Each village now gets its own defense scan and response.
+
+## 2026-03-09
+
+### Disabled Farm Lists Stay Disabled
+
+Fixed a bug where disabling a farm list via the toggle would not actually stop it from running. Disabled lists are now properly skipped by the scheduler and won't be started by sibling jobs either.
+
+### Login Recovery Improved
+
+Fixed an issue where tasks would fail instead of re-authenticating when the browser ended up on a login page. Vangrd now properly recovers and continues the job.
+
+## 2026-03-08
+
+### Farm List Setup Fixed
+
+Fixed a bug where newly created farm list jobs would silently disappear after a few seconds. Jobs now persist correctly and survive background maintenance cycles.
+
+## 2026-03-04
+
+### Agent Health Dashboard
+
+The account dashboard now shows an **agent health card** with a live state indicator and a timeline of recent health transitions. Agent health is also tracked for dual sessions.
+
+### Player Tracking Deltas
+
+Snapshot history for tracked players now shows **population and village count changes** between snapshots, making it easier to spot growth or losses at a glance.
+
+### Interactive Template Editor
+
+Build plan templates now have an **interactive village center map** - click empty slots to place buildings, click to increase level, right-click to decrease. Includes a tribe selector for correct building options and a bulk action to queue all resource fields to a target level.
+
+### Nearby Village Search Fixed
+
+The **inactive players** search in the Tools panel now returns results correctly. A bug in the map query caused nearby village searches to return empty results for certain coordinate ranges.
+
+## 2026-03-03
+
+### Faster Farm List Starts
+
+When starting all farm lists, Vangrd now clicks multiple start buttons in a single page load instead of one at a time - making large raiding runs noticeably faster.
+
+### Build Plan Template Saving Fixed
+
+Saving a village's build plan as a template no longer creates an empty template - all steps are now included correctly.
+
+### Quick Demolish from Village View
+
+You can now **right-click** a building in the village center to queue it for demolition - the level bubble turns red and shows the target level. Left-click to undo one level at a time.
+
+### Celebration Reliability
+
+Celebrations no longer stop processing when one village encounters an error - other villages will continue running their celebrations normally.
+
+### Server Performance Improvements
+
+Vangrd now closes unused browsers automatically to free up CPU and memory, and saves data much more efficiently - reducing lag when changing settings or during heavy automation. Settings should no longer show "no response from server" warnings under load.
+
+## 2026-03-02
+
+### Smarter Build Plan Processing
+
+Build plans now continue processing other villages even when one village is waiting for resources. Previously, a single village that couldn't afford its next upgrade would block all other villages from building.
+
+## 2026-03-01
+
+### Reliability Improvements
+
+Pausing and unpausing jobs now works more reliably - unpaused jobs immediately resume instead of staying stuck. Page navigation is also more robust, with better detection and recovery when a page doesn't load correctly.
+
+## 2026-02-28
+
+### Village Selector Fixed
+
+Switching villages in the dashboard no longer affects which village the bot is working on in-game. Previously, viewing a different village could cause automation tasks to run against the wrong village.
+
+### Adventure Health Safety
+
+Adventures now check your hero's health before starting. If health is below the configured minimum (default **40%**), the adventure is skipped until the hero recovers. You can adjust the threshold in **Account Settings → Adventures**.
+
+### New Live Browser View
+
+The browser stream has been completely rebuilt - it now uses a lightweight screen capture instead of the old VNC setup, resulting in a faster and more reliable live view. The stream also shows which dual or owner is currently active.
+
+### Celebrations Fixed
+
+Celebrations now work correctly on non-English game servers. Also fixed an issue where the resource check could silently skip all villages, preventing celebrations from ever starting.
+
+## 2026-02-27
+
+### Vikings Troop Training
+
+Auto-training now supports the **Vikings** tribe. Training is also more resilient - if one village fails, the remaining villages will still be trained instead of the entire job stopping.
+
+### Combat & Defense Improvements
+
+Attack confirmations are now faster and more reliable. Attack alerts also fire even when the scheduler is paused, and defense scanning no longer fails for villages without a rally point.
+
+### Hero Resource Transfer
+
+Hero resource transfers now work correctly with Travian's updated transfer dialog.
+
+### Settings Validation
+
+Settings fields now show inline warnings when values could cause issues - like both work/sleep intervals set to zero, or a minimum higher than the maximum.
+
+### Custom Dual Labels
+
+You can now give your duals custom display names so they're easier to tell apart. Double-click any dual name - in the Duals panel or the Schedule tabs - to rename it. The label appears everywhere: schedule tabs, browser stream, and ownership controls. Clear the label to fall back to the login username.
+
+### Automatic Ad Bonuses
+
+Ad bonuses have been completely rewritten and now work reliably. The old approach was fragile and often failed - bonuses are now claimed without issues. This also fixes the previously broken **adventure duration/danger** and **special building upgrade** bonuses. New: **+15% production boost** for all four resources can now be claimed automatically every 24 hours. Enable everything in the new **Ad Bonuses** section in account settings.
+
+### Building Queue Reacts Instantly
+
+The building automation no longer runs on a fixed timer. Vangrd now monitors the queue continuously and queues the next upgrade the moment a slot opens - no more waiting up to 10 minutes between builds.
+
+## 2026-02-26
+
+### Favorited Troops Now Train Correctly
+
+Troops marked as **favorites** in Travian are now trained correctly - previously they were skipped, causing the training task to do nothing for accounts using the favorites feature.
+
+### Drag & Drop List Fix
+
+Fixed a rare bug where dragging items in reorderable lists (build plan, training priorities, smithy upgrades, etc.) could replace an entry with a blank/broken one. Any corrupted lists are automatically cleaned up on load.
+
+### Export / Import Page Fix
+
+Fixed a crash that prevented the Data Management (export/import) page from loading.
+
+### Agent Outage Recovery
+
+When the agent connection drops mid-session, Vangrd now retries automatically with increasing wait times (30s up to 10min) instead of restarting the entire browser session. Jobs resume on their own once the agent comes back.
+
+### Farm Optimizer for Non-Plus Accounts
+
+The farm list optimizer and troop summary now work correctly for accounts without a Travian Plus subscription.
+
+### Stability Improvements
+
+Fixed an issue where duplicate automation tasks could appear after a restart, and improved data reliability when multiple account records existed.
+
+### No More Mid-Action Page Reloads
+
+The game's automatic page refresh is now blocked at all times while Vangrd is running, preventing it from interrupting tasks mid-action. The page is only briefly unblocked at the exact moment a click is sent.
+
+### Better Build Time Estimates
+
+Build plan timing predictions now work in more situations - villages that were previously showing rough estimates will now display more accurate countdown times.
+
+### Faster & More Reliable Actions
+
+In-game actions like clicking and navigating are noticeably faster. Vangrd also no longer occasionally misses clicks when the browser is under load.
+
+### Build Queue Activity Details
+
+The recent activity feed now shows exactly what was built - e.g. "Queued Granary upgrade to level 12" - instead of the generic "Build plan step completed" message.
+
+### Cleaner Scheduler Overview
+
+The dashboard scheduler card now shows the active task name, upcoming job queue with countdowns, and a condensed lock/heartbeat indicator - all at a glance instead of scattered across separate sections.
+
+### More Reliable Oasis Clearing
+
+Oasis scanning now works reliably on slower agent connections. Previously, some oases would fail to load in time and get skipped - Vangrd now waits longer and falls back to reading the page directly if needed.
+
+### Smoother Login Recovery
+
+Vangrd now handles expired sessions gracefully - it re-authenticates automatically and keeps running jobs intact, so farming, building, and oasis clearing continue without interruption after a session timeout.
+
+### Account Status at a Glance
+
+Account cards now show the current session status and last heartbeat time, so you can quickly see which accounts are actively connected.
+
+### Better Agent Recovery
+
+Vangrd now automatically recovers when an agent connection drops mid-session, instead of getting stuck on an error page.
+
+### Changelog Added
+
+You can now see app updates right from the sidebar. New entries will glow until you've read them.
+
+## 2026-02-25
+
+### Stability Fixes
+
+Fixed an issue that could cause Vangrd to get stuck in a restart loop for accounts without an alliance. Long-running tasks also no longer risk timing out during idle periods.
+
+### Build Queue Fixes
+
+Build plan timing estimates are now more accurate, and existing buildings no longer accidentally get treated as new constructions when upgrading.
+
+### Gold Management Page
+
+Added a new **Gold** page to the sidebar for managing gold-related actions.
+
+### Reliable Farm List Targets
+
+Adding targets to a farm list no longer fails when some targets already exist - duplicates are now handled gracefully instead of blocking the entire batch.
+
